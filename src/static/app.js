@@ -44,6 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication state
   let currentUser = null;
 
+  // Helper function to escape HTML for safe use in attributes
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   // Time range mappings for the dropdown
   const timeRanges = {
     morning: { start: "06:00", end: "08:00" }, // Before school hours
@@ -554,16 +561,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="social-share-buttons">
         <span class="share-label">Share:</span>
-        <button class="share-button twitter-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Twitter" aria-label="Share ${name} on Twitter">
+        <button class="share-button twitter-share" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share on Twitter" aria-label="Share ${escapeHtml(name)} on Twitter">
           𝕏
         </button>
-        <button class="share-button facebook-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Facebook" aria-label="Share ${name} on Facebook">
+        <button class="share-button facebook-share" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share on Facebook" aria-label="Share ${escapeHtml(name)} on Facebook">
           f
         </button>
-        <button class="share-button linkedin-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on LinkedIn" aria-label="Share ${name} on LinkedIn">
+        <button class="share-button linkedin-share" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share on LinkedIn" aria-label="Share ${escapeHtml(name)} on LinkedIn">
           in
         </button>
-        <button class="share-button email-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share via Email" aria-label="Share ${name} via Email">
+        <button class="share-button email-share" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share via Email" aria-label="Share ${escapeHtml(name)} via Email">
           ✉
         </button>
       </div>
