@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (activeTimeFilter) {
       currentTimeRange = activeTimeFilter.dataset.time;
     }
-
   }
 
   // Function to set day filter
@@ -117,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    displayFilteredActivities();
+    fetchActivities();
   }
 
   // Check if user is already logged in (from localStorage)
