@@ -23,7 +23,19 @@ def init_database():
     # Initialize activities if empty
     if activities_collection.count_documents({}) == 0:
         for name, details in initial_activities.items():
-            activities_collection.insert_one({"_id": name, **details})
+            activity_doc = {"_id": name, **details}
+            difficulty = activity_difficulties.get(name)
+            if difficulty:
+                activity_doc["difficulty"] = difficulty
+            activities_collection.insert_one(activity_doc)
+    else:
+        for name, difficulty in activity_difficulties.items():
+            existing = activities_collection.find_one({"_id": name}, {"difficulty": 1})
+            if existing and existing.get("difficulty") != difficulty:
+                activities_collection.update_one(
+                    {"_id": name},
+                    {"$set": {"difficulty": difficulty}}
+                )
             
     # Initialize teacher accounts if empty
     if teachers_collection.count_documents({}) == 0:
@@ -175,6 +187,19 @@ initial_activities = {
         "max_participants": 16,
         "participants": ["william@mergington.edu", "jacob@mergington.edu"]
     }
+}
+
+activity_difficulties = {
+    "Chess Club": "intermediate",
+    "Programming Class": "beginner",
+    "Soccer Team": "intermediate",
+    "Basketball Team": "intermediate",
+    "Art Club": "beginner",
+    "Drama Club": "beginner",
+    "Math Club": "advanced",
+    "Weekend Robotics Workshop": "advanced",
+    "Science Olympiad": "advanced",
+    "Sunday Chess Tournament": "advanced"
 }
 
 initial_teachers = [

@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryFilters = document.querySelectorAll(".category-filter");
   const dayFilters = document.querySelectorAll(".day-filter");
   const timeFilters = document.querySelectorAll(".time-filter");
+  const difficultyFilters = document.querySelectorAll(".difficulty-filter");
 
   // Authentication elements
   const loginButton = document.getElementById("login-button");
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchQuery = "";
   let currentDay = "";
   let currentTimeRange = "";
+  let currentDifficulty = "";
 
   // Authentication state
   let currentUser = null;
@@ -71,6 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (activeTimeFilter) {
       currentTimeRange = activeTimeFilter.dataset.time;
     }
+
+    const activeDifficultyFilter = document.querySelector(
+      ".difficulty-filter.active"
+    );
+    if (activeDifficultyFilter) {
+      currentDifficulty = activeDifficultyFilter.dataset.difficulty || "";
+    } else {
+      currentDifficulty = "";
+    }
   }
 
   // Function to set day filter
@@ -101,6 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.remove("active");
       }
     });
+
+    fetchActivities();
+  }
+
+  // Function to set difficulty filter
+  function setDifficultyFilter(difficulty) {
+    if (currentDifficulty === difficulty) {
+      currentDifficulty = "";
+      difficultyFilters.forEach((btn) => btn.classList.remove("active"));
+    } else {
+      currentDifficulty = difficulty;
+      difficultyFilters.forEach((btn) => {
+        if (btn.dataset.difficulty === difficulty) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
 
     fetchActivities();
   }
@@ -370,6 +400,20 @@ document.addEventListener("DOMContentLoaded", () => {
     return "academic";
   }
 
+  function passesDifficultyFilter(activityDifficulty, filterValue) {
+    const normalized = (activityDifficulty || "").toString().toLowerCase();
+
+    if (!filterValue) {
+      return true;
+    }
+
+    if (filterValue === "unspecified") {
+      return !normalized;
+    }
+
+    return normalized === filterValue;
+  }
+
   // Function to fetch activities from API with optional day and time filters
   async function fetchActivities() {
     // Show loading skeletons first
@@ -429,6 +473,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Apply category filter
       if (currentFilter !== "all" && activityType !== currentFilter) {
+        return;
+      }
+
+      // Apply difficulty filter
+      if (!passesDifficultyFilter(details.difficulty, currentDifficulty)) {
         return;
       }
 
@@ -694,29 +743,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Add event listeners to difficulty filter buttons
+  difficultyFilters.forEach((button) => {
+    button.addEventListener("click", () => {
+      setDifficultyFilter(button.dataset.difficulty || "");
+    });
+  });
+
   // Add event listeners to day filter buttons
   dayFilters.forEach((button) => {
     button.addEventListener("click", () => {
-      // Update active class
-      dayFilters.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      // Update current day filter and fetch activities
-      currentDay = button.dataset.day;
-      fetchActivities();
+      setDayFilter(button.dataset.day);
     });
   });
 
   // Add event listeners for time filter buttons
   timeFilters.forEach((button) => {
     button.addEventListener("click", () => {
-      // Update active class
-      timeFilters.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-
-      // Update current time filter and fetch activities
-      currentTimeRange = button.dataset.time;
-      fetchActivities();
+      setTimeRangeFilter(button.dataset.time);
     });
   });
 
@@ -938,6 +982,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.activityFilters = {
     setDayFilter,
     setTimeRangeFilter,
+    setDifficultyFilter,
   };
 
   // Initialize app
