@@ -392,6 +392,20 @@ document.addEventListener("DOMContentLoaded", () => {
     return "academic";
   }
 
+  function passesDifficultyFilter(activityDifficulty, filterValue) {
+    const normalized = (activityDifficulty || "").toString().toLowerCase();
+
+    if (!filterValue) {
+      return true;
+    }
+
+    if (filterValue === "unspecified") {
+      return !normalized;
+    }
+
+    return normalized === filterValue;
+  }
+
   // Function to fetch activities from API with optional day and time filters
   async function fetchActivities() {
     // Show loading skeletons first
@@ -454,23 +468,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-       // Apply difficulty filter
-       const activityDifficulty = (
-         details.difficulty || ""
-       ).toString().toLowerCase();
-
-       if (currentDifficulty) {
-         if (currentDifficulty === "unspecified") {
-           if (activityDifficulty) {
-             return;
-           }
-         } else if (
-           activityDifficulty &&
-           activityDifficulty !== currentDifficulty
-         ) {
-           return;
-         }
-       }
+      // Apply difficulty filter
+      if (!passesDifficultyFilter(details.difficulty, currentDifficulty)) {
+        return;
+      }
 
       // Apply weekend filter if selected
       if (currentTimeRange === "weekend" && details.schedule_details) {
