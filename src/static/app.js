@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Dark mode elements
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const darkModeIcon = document.getElementById("dark-mode-icon");
+
   // Activity categories with corresponding colors
   const activityTypes = {
     sports: { label: "Sports", color: "#e8f5e9", textColor: "#2e7d32" },
@@ -44,12 +48,51 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication state
   let currentUser = null;
 
+  // Dark mode state
+  let isDarkMode = false;
+
   // Time range mappings for the dropdown
   const timeRanges = {
     morning: { start: "06:00", end: "08:00" }, // Before school hours
     afternoon: { start: "15:00", end: "18:00" }, // After school hours
     weekend: { days: ["Saturday", "Sunday"] }, // Weekend days
   };
+
+  // Initialize dark mode from localStorage
+  function initializeDarkMode() {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    if (savedDarkMode === "true") {
+      enableDarkMode();
+    }
+  }
+
+  // Enable dark mode
+  function enableDarkMode() {
+    isDarkMode = true;
+    document.body.classList.add("dark-mode");
+    darkModeIcon.textContent = "☀️";
+    localStorage.setItem("darkMode", "true");
+  }
+
+  // Disable dark mode
+  function disableDarkMode() {
+    isDarkMode = false;
+    document.body.classList.remove("dark-mode");
+    darkModeIcon.textContent = "🌙";
+    localStorage.setItem("darkMode", "false");
+  }
+
+  // Toggle dark mode
+  function toggleDarkMode() {
+    if (isDarkMode) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  }
+
+  // Event listener for dark mode toggle
+  darkModeToggle.addEventListener("click", toggleDarkMode);
 
   // Initialize filters from active elements
   function initializeFilters() {
@@ -862,6 +905,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeDarkMode();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
