@@ -554,16 +554,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="social-share-buttons">
         <span class="share-label">Share:</span>
-        <button class="share-button twitter-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Twitter">
+        <button class="share-button twitter-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Twitter" aria-label="Share ${name} on Twitter">
           𝕏
         </button>
-        <button class="share-button facebook-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Facebook">
+        <button class="share-button facebook-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on Facebook" aria-label="Share ${name} on Facebook">
           f
         </button>
-        <button class="share-button linkedin-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on LinkedIn">
+        <button class="share-button linkedin-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share on LinkedIn" aria-label="Share ${name} on LinkedIn">
           in
         </button>
-        <button class="share-button email-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share via Email">
+        <button class="share-button email-share" data-activity="${name}" data-description="${details.description}" data-schedule="${formattedSchedule}" title="Share via Email" aria-label="Share ${name} via Email">
           ✉
         </button>
       </div>
@@ -630,15 +630,15 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (button.classList.contains("facebook-share")) {
       shareToFacebook(shareUrl);
     } else if (button.classList.contains("linkedin-share")) {
-      shareToLinkedIn(shareUrl, activityName, description);
+      shareToLinkedIn(shareUrl);
     } else if (button.classList.contains("email-share")) {
       shareViaEmail(activityName, shareText, shareUrl);
     }
   }
 
-  // Share to Twitter
+  // Share to Twitter/X
   function shareToTwitter(text, url) {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    const twitterUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
     window.open(twitterUrl, "_blank", "width=600,height=400");
   }
 
@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Share to LinkedIn
-  function shareToLinkedIn(url, title, summary) {
+  function shareToLinkedIn(url) {
     const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
     window.open(linkedInUrl, "_blank", "width=600,height=400");
   }
