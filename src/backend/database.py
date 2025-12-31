@@ -188,16 +188,16 @@ initial_activities = {
 }
 
 activity_difficulties = {
-    "Chess Club": "Intermediate",
-    "Programming Class": "Beginner",
-    "Soccer Team": "Intermediate",
-    "Basketball Team": "Intermediate",
-    "Art Club": "Beginner",
-    "Drama Club": "Beginner",
-    "Math Club": "Advanced",
-    "Weekend Robotics Workshop": "Advanced",
-    "Science Olympiad": "Advanced",
-    "Sunday Chess Tournament": "Advanced"
+    "Chess Club": "intermediate",
+    "Programming Class": "beginner",
+    "Soccer Team": "intermediate",
+    "Basketball Team": "intermediate",
+    "Art Club": "beginner",
+    "Drama Club": "beginner",
+    "Math Club": "advanced",
+    "Weekend Robotics Workshop": "advanced",
+    "Science Olympiad": "advanced",
+    "Sunday Chess Tournament": "advanced"
 }
 
 initial_teachers = [
