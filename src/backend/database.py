@@ -31,7 +31,7 @@ def init_database():
     else:
         for name, difficulty in activity_difficulties.items():
             activities_collection.update_one(
-                {"_id": name},
+                {"_id": name, "difficulty": {"$ne": difficulty}},
                 {"$set": {"difficulty": difficulty}}
             )
             
